@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CRUDApp.Models
 {
@@ -8,5 +9,7 @@ namespace CRUDApp.Models
         public string Number { get; set; }
         public DateTime Date { get; set; }
         public int ProviderID { get; set; }
+        public Provider Provider { get; set; }
+        public List<OrderItem> Orders { get; set; }
     }
 }

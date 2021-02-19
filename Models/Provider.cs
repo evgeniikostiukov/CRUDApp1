@@ -7,5 +7,8 @@ namespace CRUDApp.Models
 {
     public class Provider
     {
+        public int ID { get; }
+        public string Name { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

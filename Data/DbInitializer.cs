@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CRUDApp.Data
 {
-    public class DbInitializer
+    public static class DbInitializer
     {
         public static void Initialize(OrderContext context)
         {
@@ -13,6 +13,7 @@ namespace CRUDApp.Data
 
             if (context.Orders.Any())
             {
+                Console.WriteLine("DB EST`");
                 return;
             }
 
@@ -64,6 +65,7 @@ namespace CRUDApp.Data
                 context.Providers.Add(e);
             }
             context.SaveChanges();
+            Console.WriteLine("DB SOZDANA");
         }
     }
 }

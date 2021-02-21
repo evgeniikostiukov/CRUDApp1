@@ -36,6 +36,8 @@ namespace CRUDApp.Controllers
 
             var order = await _context.Orders
                 .Include(o => o.Provider)
+                .Include(s => s.OrderItems)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (order == null)
             {

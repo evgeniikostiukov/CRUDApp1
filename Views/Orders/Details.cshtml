@@ -34,17 +34,21 @@
         <dd class="col-sm-10">
             <table class="table">
                 <tr>
-                    <th>Order items Title</th>
-                    <th>Items</th>
+                    <th>Named item</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
                 </tr>
                 @foreach (var item in Model.OrderItems)
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Order.Number)
+                            @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Name)
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Unit)
                         </td>
                     </tr>
                 }

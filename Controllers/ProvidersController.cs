@@ -20,9 +20,15 @@ namespace CRUDApp.Controllers
         }
 
         // GET: Providers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filterName = null)
         {
-            return View(await _context.Providers.ToListAsync());
+            var providers = from s in _context.Providers
+                            select s;
+            if (filterName != null)
+            {
+                providers = providers.Where(s => s.Name == filterName);
+            }
+            return View(await providers.AsNoTracking().ToListAsync());
         }
 
         // GET: Providers/Details/5
@@ -34,6 +40,7 @@ namespace CRUDApp.Controllers
             }
 
             var provider = await _context.Providers
+                .Include(m => m.Orders)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (provider == null)
             {

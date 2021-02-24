@@ -1,14 +1,29 @@
 ﻿@model IEnumerable<CRUDApp.Models.Provider>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Providers";
 }
 
-<h1>Index</h1>
+<h1>Providers</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form class="form-inline" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Choose Number of order items
+            <select name="filterName" multiple>
+                @foreach (var name in Model.Select(s => s.Name).Distinct().OrderBy(s => s))
+                {
+                    <option>@name</option>
+                }
+            </select>
+        </p>
+        <input asp- type="submit" value="Search" class="btn btn-outline-dark" />
+        <a asp-action="Index" class="btn btn-outline-dark">Back to Full List</a>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>

@@ -11,9 +11,29 @@ namespace CRUDApp.Data
         {
             context.Database.EnsureCreated();
 
+            if (context.Providers.Any())
+            {
+                return;
+            }
+
+            var providers = new Provider[]
+            {
+            new Provider{Name="Provider1"},
+            new Provider{Name="Provider2"},
+            new Provider{Name="Provider3"},
+            new Provider{Name="Provider4"},
+            new Provider{Name="Provider5"},
+            new Provider{Name="Provider6"},
+            new Provider{Name="Provider7"}
+            };
+            foreach (Provider e in providers)
+            {
+                context.Providers.Add(e);
+            }
+            context.SaveChanges();
+            
             if (context.Orders.Any())
             {
-                Console.WriteLine("DB EST`");
                 return;
             }
 
@@ -34,9 +54,14 @@ namespace CRUDApp.Data
             }
             context.SaveChanges();
 
+            if (context.OrderItems.Any())
+            {
+                return;
+            }
+
             var orderItems = new OrderItem[]
             {
-            new OrderItem{OrderID=1,Name="ExampleItem1",Quantity=2,Unit="km"},
+            new OrderItem{OrderID=2,Name="ExampleItem1",Quantity=2,Unit="km"},
             new OrderItem{OrderID=2,Name="ExampleItem2",Quantity=3,Unit="m"},
             new OrderItem{OrderID=3,Name="ExampleItem3",Quantity=2,Unit="kg"},
             new OrderItem{OrderID=4,Name="ExampleItem4",Quantity=5,Unit="sm"},
@@ -49,23 +74,6 @@ namespace CRUDApp.Data
                 context.OrderItems.Add(c);
             }
             context.SaveChanges();
-
-            var providers = new Provider[]
-            {
-            new Provider{Name="Provider1"},
-            new Provider{Name="Provider2"},
-            new Provider{Name="Provider3"},
-            new Provider{Name="Provider4"},
-            new Provider{Name="Provider5"},
-            new Provider{Name="Provider6"},
-            new Provider{Name="Provider7"}
-            };
-            foreach (Provider e in providers)
-            {
-                context.Providers.Add(e);
-            }
-            context.SaveChanges();
-            Console.WriteLine("DB SOZDANA");
         }
     }
 }

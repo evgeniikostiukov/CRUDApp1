@@ -20,10 +20,44 @@ namespace CRUDApp.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string filterNumber = null, string filterDate = null, string filterProvider = null)
         {
-            var orderContext = _context.Orders.Include(o => o.Provider);
-            return View(await orderContext.ToListAsync());
+            ViewData["IDSortParam"] = String.IsNullOrEmpty(sortOrder) ? "ID_desc" : "";
+            ViewData["NumberSortParam"] = sortOrder == "number" ? "number_desc" : "number";
+            ViewData["DateSortParam"] = sortOrder == "date" ? "date_desc" : "date";
+            //ViewData["CurrentFilter"] = String.IsNullOrEmpty(filterNumber) ? ViewData["CurrentFilter"] : ViewData["CurrentFilter"] + filterNumber;
+            //ViewData["CurrentFilter"] = String.IsNullOrEmpty(filterDate) ? ViewData["CurrentFilter"] : ViewData["CurrentFilter"] + filterDate;
+            //ViewData["CurrentFilter"] = String.IsNullOrEmpty(filterProvider) ? ViewData["CurrentFilter"] : ViewData["CurrentFilter"] + filterProvider;
+
+            var orders = from s in _context.Orders
+                         select s;
+            orders = orders.Include(o => o.Provider);
+
+            if (filterNumber != null)
+            {
+                orders = orders.Where(s => s.Number.Contains(filterNumber));
+            }
+
+            if (filterDate != null)
+            {
+                orders = orders.Where(s => s.Date.ToString().Contains(filterDate));
+            }
+
+            if (filterProvider != null)
+            {
+                orders = orders.Where(s => s.ProviderID.ToString().Contains(filterProvider));
+            }
+
+            orders = sortOrder switch
+            {
+                "ID_desc" => orders.OrderByDescending(s => s.ID),
+                "number" => orders.OrderBy(s => s.Number),
+                "number_desc" => orders.OrderByDescending(s => s.Number),
+                "date" => orders.OrderBy(s => s.Date),
+                "date_desc" => orders.OrderByDescending(s => s.Date),
+                _ => orders.OrderBy(s => s.ID),
+            };
+            return View(await orders.AsNoTracking().ToListAsync());
         }
 
         // GET: Orders/Details/5
@@ -120,7 +154,7 @@ namespace CRUDApp.Controllers
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateException /* ex */)
+                catch (DbUpdateException ex)
                 {
                     //Log the error (uncomment ex variable name and write a log.)
                     ModelState.AddModelError("", "Unable to save changes. " +

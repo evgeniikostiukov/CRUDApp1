@@ -20,10 +20,23 @@ namespace CRUDApp.Controllers
         }
 
         // GET: OrderItems
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filterName = null, string filterUnit = null)
         {
-            var orderContext = _context.OrderItems.Include(o => o.Order);
-            return View(await orderContext.ToListAsync());
+            ViewData["filterName"] = filterName + " " + filterUnit;
+            var orderItems = from s in _context.OrderItems
+                             select s;
+            orderItems = orderItems.Include(s => s.Order);
+            if (filterName != null)
+            {
+                orderItems = orderItems.Where(s => s.Name.Contains(filterName));
+            }
+
+            if (filterUnit != null)
+            {
+                orderItems = orderItems.Where(s => s.Unit == filterUnit);
+            }
+
+            return View(await orderItems.ToListAsync());
         }
 
         // GET: OrderItems/Details/5

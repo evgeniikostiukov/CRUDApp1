@@ -16,6 +16,28 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Orders)
+        </dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Number</th>
+                </tr>
+                @foreach (var item in Model.Orders)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-controller="Orders" asp-route-id="@item.ID">@Html.DisplayFor(modelitem => item.ID)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelitem => item.Number)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
     </dl>
 </div>
 <div>
